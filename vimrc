@@ -1,0 +1,460 @@
+" ========== Vim Basic Settings ============="
+
+" Pathogen settings.
+filetype off
+call pathogen#infect()
+call pathogen#helptags()
+filetype plugin indent on
+
+" FileType specific stuff
+autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
+autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
+
+" Make vim incompatbile to vi.
+set nocompatible
+set modelines=0
+
+"TAB settings.
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+set smarttab
+
+" More Common Settings.
+set encoding=utf-8
+set scrolloff=3
+set autoindent
+set smartindent
+set showmode
+set showcmd "show what you are typing as a command
+set hidden
+set wildmenu
+set wildmode=list:longest,full
+set visualbell
+set foldmethod=marker
+set autoread "set to autoread when a file is changed from the outside
+set magic "for regular expressions
+set cmdheight=1
+set so=3 "lines to the cursor when moving vertically
+set viminfo^=%
+syntax enable
+
+set ffs=unix,dos,mac
+
+set ttyfast
+set ruler
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+set laststatus=2
+
+set number
+set norelativenumber
+
+set shell=/bin/bash
+set lazyredraw
+set matchtime=3
+
+"Changing Leader Key
+let mapleader = ","
+"let maplocalleader = ","
+set timeout timeoutlen=750 ttimeoutlen=750
+
+" Set title to window
+set title 
+" Dictionary path, from which the words are being looked up.
+set dictionary=/usr/share/dict/words
+
+" Make pasting done without any indentation break."
+set pastetoggle=<F3>
+
+" Make Vim able to edit corntab files again.
+set backupskip=/tmp/*,/private/tmp/*"
+
+" Enable Mouse
+set mouse=a
+
+" Turn backup off
+set nobackup
+set nowb
+set noswapfile
+
+" Turn on Omni completion
+set omnifunc=syntaxcomplete#Complete
+
+"Settings for Searching and Moving
+set ignorecase
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+set hlsearch
+set diffopt=filler,iwhite
+
+" Use english for spellchecking, but don't spellcheck by default
+if version >= 700
+   set spl=en spell
+   set nospell
+endif
+
+" Make Vim to handle long lines nicely.
+set wrap
+set lbr
+set textwidth=500
+set formatoptions=qrn1
+set showbreak=↪
+
+" To  show special characters in Vim
+set list
+set listchars=tab:▸\ ,eol:¬,trail:.,extends:#,nbsp:.
+
+" Wildmenu completion "
+set wildmenu
+set wildmode=list:longest
+set wildignorecase
+set wildignore+=.hg,.git,.svn " Version Controls"
+set wildignore+=*.aux,*.out,*.toc "Latex Intermediate files"
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg "Binary Imgs"
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest "Compiled Object files"
+set wildignore+=*.spl "Compiled spelling world list"
+set wildignore+=*.sw? "Vim swap files"
+set wildignore+=*.DS_Store "OSX "
+set wildignore+=*.luac "Lua byte code"
+set wildignore+=migrations "Django migrations"
+set wildignore+=*.pyc "Python Object codes"
+set wildignore+=*.orig "Merge resolution files"
+
+" Delete trailing white space on save, useful for Python
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
+
+" Working with split screen nicely
+" Resize Split When the window is resized"
+autocmd VimResized * :wincmd =
+
+"Make Sure that Vim returns to the same line when we reopen a file"
+augroup line_return
+    autocmd!
+    autocmd BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \ execute 'normal! g`"zvzz' |
+        \ endif
+augroup END
+
+" When opening an empty file start in insert mode
+autocmd BufNewFile * execute "startinsert"
+
+" Automatically cd into the directory that the file is in
+autocmd BufEnter * execute "chdir ".escape(expand("%:p:h"), ' ')
+
+" Set vim to save the file on focus out.
+autocmd FocusLost * :wa
+
+
+"""""""""""""""""""""""
+" key mappings =>
+"""""""""""""""""""""""
+
+" ,ev Shortcut to edit .vimrc file on the fly on a vertical window.
+nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<cr>
+
+" Naviagations using keys up/down/left/right
+" Disabling default keys to learn the hjkl
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
+"inoremap <left> <nop>
+"inoremap <right> <nop>
+nnoremap j gj
+nnoremap k gk
+
+" Remap 0 to first non-blank character
+nnoremap 0 ^
+nnoremap ^ 0
+
+" Get rid of help keys
+inoremap <F1> <ESC>
+nnoremap <F1> <ESC>
+vnoremap <F1> <ESC>
+
+" Create Blank Newlines and stay in Normal mode
+nnoremap <silent> <CR> o<Esc>
+nnoremap <silent> <C-o> O<Esc>
+
+" Space will toggle folds
+nnoremap <space> za
+
+" Use ; as : in normal mode
+nnoremap ; :
+
+" toggle search highlighting
+map <leader>sh :setlocal hlsearch!<cr>
+" turn off current highlighted search
+nnoremap <silent> <leader><space> :nohlsearch<cr>
+
+" toggle whitespace highlighting
+map <leader>sl :setlocal list!<cr>
+
+" single quote to jump between brackets
+nnoremap ' %
+vnoremap ' %
+
+" Adding More Shorcuts keys using leader key.
+" Fast saving/quiting
+nmap <leader>w :w<cr>
+inoremap <leader>w <esc>:w<cr>
+nmap <leader>q :q<cr>
+nmap <leader>x :q!<cr>
+nmap <leader>wq :wq<cr>
+
+" Forgot to open file with sudo
+" pipe save through sudo
+nnoremap <leader>sw :w !sudo tee >/dev/null %
+
+" Select just pasted text.
+nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+" toggle spell checking
+map <leader>ss :setlocal spell!<cr>
+
+" next misspelled word
+map <leader>sn ]s
+" previous misspelled word
+map <leader>sp [s
+" add word to dictionary
+map <leader>sa zg
+" find suggestions
+map <leader>s? z=
+
+" Managing splits
+" -------------------------------------------------------------
+" move to the window in the direction given
+" or create a new split in that direction and list open buffers
+" -------------------------------------------------------------
+func! WinMove(key)
+    let t:curwin = winnr()
+    exec "wincmd ".a:key
+    if (t:curwin == winnr())
+        if (match(a:key,'[jk]'))
+            wincmd v
+        else
+            wincmd s
+        endif
+        exec "ls"
+    endif
+endfu
+
+nnoremap <silent> <C-h> :call WinMove('h')<cr>
+nnoremap <silent> <C-j> :call WinMove('j')<cr>
+nnoremap <silent> <C-k> :call WinMove('k')<cr>
+nnoremap <silent> <C-l> :call WinMove('l')<cr>
+
+"maximize current window vertically
+map <up> <C-w>_
+"make all windows equal
+map <down> <C-w>=
+"maximize current window horizontally
+map <left> <C-w><BAR>
+"make the current window the only buffer
+nnoremap <leader>o <C-w><C-o>
+
+nnoremap <silent> <C-up> :ObviousResizeUp<cr>
+nnoremap <silent> <C-down> :ObviousResizeDown<cr>
+nnoremap <silent> <C-left> :ObviousResizeLeft<cr>
+nnoremap <silent> <C-right> :ObviousResizeRight<cr>
+
+" Managing buffers
+nnoremap <leader>bg :ls<cr>:b<space>
+nnoremap <leader>bd :bdelete<cr>
+nnoremap <leader>n :bnext<cr>
+nnoremap <leader>p :bprev<cr>
+
+" Managing tabs 
+" put the current file into a new tab
+nnoremap <leader>T :tabedit %<cr>gT:quit<cr>
+" open a new tab and list buffers
+nnoremap <leader>t :tabnew<cr>:ls<cr>
+nnoremap <silent> <leader>to :tabonly<cr>
+nnoremap <silent> <leader>h :tabprev<cr>
+nnoremap <silent> <leader>l :tabnext<cr>
+
+" Align current paragraph
+nnoremap <leader>a =ip
+" Clone current paragraph
+nnoremap cp yap<S-}>p
+
+" Remove char under cursor and enter insert mode
+nnoremap <C-I> s
+" Remove line and enter insert mode
+nnoremap <C-X> S
+
+" Insert/Append a single character
+function! RepeatChar(char, count)
+    return repeat(a:char, a:count)
+endfunction
+"nnoremap s :<C-U>exec "normal i".RepeatChar(nr2char(getchar()), v:count1)<CR>
+"nnoremap S :<C-U>exec "normal a".RepeatChar(nr2char(getchar()), v:count1)<CR>
+
+" Visual mode pressing * or # searches for the current selection
+vnoremap <silent> * :call VisualSelection('f')<CR>
+vnoremap <silent> # :call VisualSelection('b')<CR>
+
+" Print working directory
+nnoremap <leader>d :pwd<cr>
+" Start a terminal command
+nnoremap <leader>c :!
+
+" Go to last change and redraw screen
+nnoremap g; g;zz
+
+"Makes the tab-autocomplete figure out whether you want to place a word there or an actual tab(4 spaces).
+function! Mosh_Tab_Or_Complete()
+    if col('.')>1 && strpart( getline('.'), col('.')-2, 3 ) =~ '^\w'
+        return "\<C-N>"
+    else
+        return "\<Tab>"
+endfunction
+"inoremap <Tab> <C-R>=Mosh_Tab_Or_Complete()<CR>
+
+
+""""""""""""""""""""""""""""""
+" => status line
+""""""""""""""""""""""""""""""
+" Always show the status line
+set laststatus=2
+
+set statusline=[%t] "tail of filename
+set statusline+=%*
+set statusline+=[%{FileSize()}]
+set statusline+=%h "help file flag
+set statusline+=%r "read only flag
+set statusline+=%m "modified flag
+set statusline+=%y "filetype
+set statusline+=[\%03.3b] "ascii
+set statusline+=[0x\%02.2B] "hex
+set statusline+=%{&paste?'[paste]':''} "in paste mode?
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+set statusline+=%= "left/right separator
+set statusline+=%l/%L "cursor line/total lines
+set statusline+=\ %p%% "percent through file
+
+function! FileSize()
+    let bytes=getfsize(expand("%:p"))
+    if bytes<=0
+        return ""
+    endif
+    if bytes<1024
+        return bytes
+    else
+        return (bytes/1024)."K"
+    endif
+endfunction
+
+" =========== END Basic Vim Settings ===========
+
+
+ "========== Plugin Settings =========="
+
+" Snipmate
+imap <C-j> <Plug>snipMateNextOrTrigger
+smap <C-j> <Plug>snipMateNextOrTrigger
+imap <C-h> <Plug>snipMateBack
+smap <C-h> <Plug>snipMateBack
+imap <C-k> <Plug>snipMateShow
+smap <C-k> <Plug>snipMateShow
+
+" DelimitMate
+let delimitMate_matchpairs = "(:),[:],{:}"
+let delimitMate_expand_space = 1
+let delimitMate_expand_cr = 1
+autocmd FileType vim,html let b:delimitMate_matchpairs = "(:),[:],{:},<:>"
+imap <C-l> <Plug>delimitMateS-Tab
+imap <C-o> <Plug>delimitMateJumpMany
+
+" Undotree
+nnoremap <silent> <F5> :UndotreeToggle<cr>
+try
+    set undofile
+    set undodir=~/.vim/.undodir/
+    set undolevels=1000
+    set undoreload=10000
+catch
+endtry
+
+" Syntastic
+nnoremap <leader>sc :SyntasticCheck<cr>
+nnoremap <leader>se :Errors<cr>
+" jump to first error detected
+let g:syntastic_auto_jump=2
+
+" Solarized
+set background=dark
+let g:solarized_termtrans=1
+let g:solarized_termcolors=256
+let g:solarized_contrast="high"
+let g:solarized_visibility="high"
+colorscheme solarized
+
+"Tagbar
+nnoremap <silent> <leader>tt :TagbarToggle<cr><esc>
+let g:tagbar_autoclose=1
+let g:tagbar_autofocus=1
+let g:tagbar_compact=1
+let g:tagbar_usearrows=1
+
+function! TagbarStatusFunc(current, sort, fname, ...) abort
+    let colour = a:current ? '%#StatusLine#' : '%#StatusLineNC#'
+    return colour . '[' . a:sort . '] ' . a:fname
+endfunction
+let g:tagbar_status_func = 'TagbarStatusFunc'
+
+" =========== END Plugin Settings =========="
+
+
+" =========== BEGIN Functions =============="
+
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+function! VisualSelection(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    endif
+    return ''
+endfunction
+
+" =========== END Functions ================"

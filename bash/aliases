@@ -1,0 +1,235 @@
+# ~/.bash_aliases holds bash aliases
+# sourced by ~/.bashrc
+
+alias reload='source $HOME/.bashrc'
+
+# quickly edit files
+alias ebrc='vim ~/.bashrc'
+alias evrc='vim ~/.vimrc'
+alias ea='vim ~/.bash_aliases'
+alias edb='vim /usr/local/bin/dbsync'
+
+# google-translate
+alias dte='trs {de=en}'
+alias etd='trs {en=de}'
+
+# typing exit is annoying
+alias x='exit'
+
+# open any file or folder with default app
+alias o='xdg-open '
+
+# become root
+alias root='sudo -i'
+
+# vim aliases
+#alias vim='vim -p'
+alias vimi='vim -c "startinsert"'
+alias vi='vim'
+alias svim='sudo vim'
+alias edit='vim'
+
+resetadb() { sudo /usr/local/lib/eclipse-adt/sdk/platform-tools/adb kill-server; sudo /usr/local/lib/eclipse-adt/sdk/platform-tools/adb start-server; }
+
+# history aliases
+alias h='history'
+alias hgrep='history | grep -i' # search history
+alias hl='history | tac | less' # history in reverse order
+
+# set right-alt key for typing UTF-8 characters
+alias setcompose='setxkbmap -option compose:ralt'
+
+# list path variable
+alias path='echo -e ${PATH//:/\\n}'
+
+# view running processes
+alias psx='ps aux'
+alias psl='ps aux | less'
+
+psg()
+{
+    ps -fp $(pgrep -d ' ' -f "$1")
+}
+
+# kill all processes whose names match a certain pattern
+psk()
+{
+   ps aux | grep "$@" | awk "{ print \$2 }" | xargs kill ;
+}
+
+# processes using the most memory
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+
+# processes using the most cpu time
+alias pscpu='ps auxf | sort -nr -k 3'
+alias pscpu10='ps auxf | sort -nr -k 3 | head -10'
+
+# shutdown/reboot/logout
+alias shtd='sudo shutdown -P now'
+alias rbt='xfce4-session-logout --reboot'
+alias lgo='xfce4-session-logout --logout'
+
+# always continue wget
+# always save to ~/Downloads
+alias wget='wget -c -P ~/Downloads'
+alias wgetncc='wget --no-check-certificate'
+alias wgetua='wget --user-agent="Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36"'
+
+# ls aliases
+alias ll='ls -AlFh'
+alias lsl='ls -l'
+lls() { ls -AlFh "$@" | less ; }
+alias lsd='ls -d'
+alias l1='ls -1'
+alias lt='ls -lth'
+alias lu='ls -ltuh'
+alias la='ls -A'
+alias l='ls -CF'
+
+# file count
+alias fc='echo $(ls -1 | wc -l)'
+
+# Searching
+alias search='grep -rni'
+# ff: find file under cwd
+ff() { find . -name "$@" 2>/dev/null ; }
+# ffs: find file that starts with a given string
+ffs() { find . -name "$@"'*' 2>/dev/null ; }
+# ffe: find file that ends with a given string
+ffe() { find . -name '*'"$@" 2>/dev/null ; }
+alias f="find ./ -name"
+
+# default to confirmation
+alias mv='mv -i'
+alias cp='cp -i'
+alias cpdir='cp -r -i'
+alias rm='rm -i'
+alias rmdir='rm -rI'
+
+# do a copy, showing progress
+alias copy='rsync -ah --progress'
+
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
+alias df='df -h'
+
+alias cls='clear'
+
+alias links='elinks'
+
+# cd up a given number of directories
+up()
+{
+	TEMP=".."
+	if [[ "$#" -gt "0" ]]
+	then
+		i="1"
+		stop="$1"
+		while [[ "$i" -lt "$stop" ]]
+		do
+			TEMP="$TEMP/.."
+			i="$i+1"
+		done
+	fi
+	cd $TEMP
+}
+
+# jump back to previous directory
+alias b='cd -'
+
+alias cdtrash='cd ~/.local/share/Trash'
+alias trash='mv -t ~/.local/share/Trash'
+alias emptytrash='rm -rf ~/.local/share/Trash/*'
+
+swap()
+{
+	if [[ "$#" -ne "2" ]]
+	then
+		echo "swap <file1> <file2>"
+	else
+		mv $1 $1.tmp
+		mv $2 $1
+		mv $1.tmp $2
+	fi
+}
+
+z()
+{
+    # Check where standard input is coming from
+    case "$(stat -L -c %t /dev/fd/0)" in
+        0)
+            # Standard input is coming from pipe
+            # i.e. command | less
+            less
+            ;;
+        88)
+            # Standard input is from terminal
+            if [[ "$#" -ne "0" ]]
+            then
+                # arguments were given
+                less "$@"
+            else
+                # no arguments given, use previous command
+                $(history -p !!) | less
+            fi
+            ;;
+        *)
+            # Standard input is unkown
+            less
+            ;;
+    esac
+}
+alias less='z'
+alias more='z' # make more = less
+
+# apt-get aliases
+alias system-update='sudo apt-get check && sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get autoremove --purge && sudo apt-get autoclean'
+alias agi='sudo apt-get install'
+alias apt-search='sudo apt-cache search'
+alias apt-show='sudo apt-cache show'
+alias apt-purge='sudo apt-get --purge remove'
+alias apt-remove='sudo apt-get remove'
+
+# let sudo work with aliases
+alias sudo='sudo '
+
+# sudo previous command
+alias ss='sudo $(history -p !-1)'
+
+# mount ISO
+mntiso() {
+    [[ ! -f "$1" ]] && { echo "Provide a valid iso file"; return 1; }
+    bn=$(basename "$1")
+    mountpoint="/mnt/${bn//.iso}"
+    sudo mkdir -p "$mountpoint"
+    sudo mount -o loop "$1" "$mountpoint"
+}
+
+# unmount ISO
+umntiso() {
+    bn=$(basename "$1")
+    mountpoint="/mnt/${bn//.iso}"
+    [[ ! -d "$mountpoint" ]] && { echo "Not a valid mount point"; return 1; }
+    sudo umount "$mountpoint"
+    sudo rm -ir "$mountpoint"
+}
+
+alias gameboy='mednafen'
+
+calibre_download()
+{
+    sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
+}
+
+# sakis3g aliases
+alias glo='sudo sakis3g -c -i connect APN="internet" APN_USER="glo" APN_PASS="glo" MODEM="16d8:6281" USBDRIVER="option"'
+alias vodafone='sudo sakis3g -c -i connect APN="browse" APN_USER="vf" APN_PASS="vf" MODEM="16d8:6281" USBDRIVER="option"'
+alias mtn='sudo sakis3g -c -i connect APN="internet" APN_USER="mtn" APN_PASS="mtn" MODEM="16d8:6281" USBDRIVER="option"'
+alias disconnect='sudo sakis3g -c -i disconnect'
+alias reconnect='sudo sakis3g -c -i reconnect'
+
+# gsm-ussd modem = /dev/ttyUSB3
+alias gsm-ussd='sudo gsm-ussd -m /dev/ttyUSB3'
