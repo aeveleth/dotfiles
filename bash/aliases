@@ -7,7 +7,6 @@ alias reload='source $HOME/.bashrc'
 alias ebrc='vim ~/.bashrc'
 alias evrc='vim ~/.vimrc'
 alias ea='vim ~/.bash_aliases'
-alias edb='vim /usr/local/bin/dbsync'
 
 # google-translate
 alias dte='trs {de=en}'
@@ -29,7 +28,7 @@ alias vi='vim'
 alias svim='sudo vim'
 alias edit='vim'
 
-resetadb() { sudo /usr/local/lib/eclipse-adt/sdk/platform-tools/adb kill-server; sudo /usr/local/lib/eclipse-adt/sdk/platform-tools/adb start-server; }
+#resetadb() { sudo /usr/local/lib/eclipse-adt/sdk/platform-tools/adb kill-server; sudo /usr/local/lib/eclipse-adt/sdk/platform-tools/adb start-server; }
 
 # history aliases
 alias h='history'
@@ -38,6 +37,7 @@ alias hl='history | tac | less' # history in reverse order
 
 # set right-alt key for typing UTF-8 characters
 alias setcompose='setxkbmap -option compose:ralt'
+alias unsetcompose='setxkbmap -option'
 
 # list path variable
 alias path='echo -e ${PATH//:/\\n}'
@@ -78,14 +78,10 @@ alias wgetua='wget --user-agent="Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.3
 
 # ls aliases
 alias ll='ls -AlFh'
-alias lsl='ls -l'
+alias l='ls -l'
 lls() { ls -AlFh "$@" | less ; }
-alias lsd='ls -d'
-alias l1='ls -1'
-alias lt='ls -lth'
-alias lu='ls -ltuh'
+alias lo='ls -1'
 alias la='ls -A'
-alias l='ls -CF'
 
 # file count
 alias fc='echo $(ls -1 | wc -l)'
@@ -188,7 +184,7 @@ alias more='z' # make more = less
 # apt-get aliases
 alias system-update='sudo apt-get check && sudo apt-get update && sudo apt-get dist-upgrade && sudo apt-get autoremove --purge && sudo apt-get autoclean'
 alias agi='sudo apt-get install'
-alias apt-search='sudo apt-cache search'
+alias acs='sudo apt-cache search'
 alias apt-show='sudo apt-cache show'
 alias apt-purge='sudo apt-get --purge remove'
 alias apt-remove='sudo apt-get remove'
@@ -217,19 +213,7 @@ umntiso() {
     sudo rm -ir "$mountpoint"
 }
 
-alias gameboy='mednafen'
-
 calibre_download()
 {
     sudo -v && wget -nv -O- https://raw.githubusercontent.com/kovidgoyal/calibre/master/setup/linux-installer.py | sudo python -c "import sys; main=lambda:sys.stderr.write('Download failed\n'); exec(sys.stdin.read()); main()"
 }
-
-# sakis3g aliases
-alias glo='sudo sakis3g -c -i connect APN="internet" APN_USER="glo" APN_PASS="glo" MODEM="16d8:6281" USBDRIVER="option"'
-alias vodafone='sudo sakis3g -c -i connect APN="browse" APN_USER="vf" APN_PASS="vf" MODEM="16d8:6281" USBDRIVER="option"'
-alias mtn='sudo sakis3g -c -i connect APN="internet" APN_USER="mtn" APN_PASS="mtn" MODEM="16d8:6281" USBDRIVER="option"'
-alias disconnect='sudo sakis3g -c -i disconnect'
-alias reconnect='sudo sakis3g -c -i reconnect'
-
-# gsm-ussd modem = /dev/ttyUSB3
-alias gsm-ussd='sudo gsm-ussd -m /dev/ttyUSB3'
