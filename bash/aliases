@@ -106,6 +106,10 @@ alias rmdir='rm -rI'
 # do a copy, showing progress
 alias copy='rsync -ah --progress'
 
+# clipboard
+alias xcopy='xclip -in -selection clipboard'
+alias xpaste='xclip -out -selection clipboard'
+
 alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'

@@ -9,6 +9,13 @@ filetype plugin indent on
 " FileType specific stuff
 autocmd FileType html,htmldjango,jinjahtml,eruby,mako let b:closetag_html_style=1
 autocmd FileType html,xhtml,xml,htmldjango,jinjahtml,eruby,mako source ~/.vim/bundle/closetag/plugin/closetag.vim
+" Delete trailing white space on save, useful for Python
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
+autocmd BufWrite *.py :call DeleteTrailingWS()
 
 " Make vim incompatbile to vi.
 set nocompatible
@@ -123,14 +130,7 @@ set wildignore+=*.luac "Lua byte code"
 set wildignore+=migrations "Django migrations"
 set wildignore+=*.pyc "Python Object codes"
 set wildignore+=*.orig "Merge resolution files"
-
-" Delete trailing white space on save, useful for Python
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
+set wildignore+=*Calibre*
 
 " Working with split screen nicely
 " Resize Split When the window is resized"
@@ -299,8 +299,8 @@ nnoremap <C-X> S
 function! RepeatChar(char, count)
     return repeat(a:char, a:count)
 endfunction
-"nnoremap s :<C-U>exec "normal i".RepeatChar(nr2char(getchar()), v:count1)<CR>
-"nnoremap S :<C-U>exec "normal a".RepeatChar(nr2char(getchar()), v:count1)<CR>
+nnoremap s :<C-U>exec "normal i".RepeatChar(nr2char(getchar()), v:count1)<CR>
+nnoremap S :<C-U>exec "normal a".RepeatChar(nr2char(getchar()), v:count1)<CR>
 
 " Visual mode pressing * or # searches for the current selection
 vnoremap <silent> * :call VisualSelection('f')<CR>
@@ -310,6 +310,9 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 nnoremap <leader>d :pwd<cr>
 " Start a terminal command
 nnoremap <leader>c :!
+
+" compile Latex file
+nnoremap <leader>; :!pdflatex %<cr>
 
 " Go to last change and redraw screen
 nnoremap g; g;zz
@@ -416,6 +419,12 @@ function! TagbarStatusFunc(current, sort, fname, ...) abort
     return colour . '[' . a:sort . '] ' . a:fname
 endfunction
 let g:tagbar_status_func = 'TagbarStatusFunc'
+
+" CommandT
+nnoremap <leader><leader> :CommandT<cr><esc>
+nnoremap <leader>. :CommandTBuffer<cr><esc>
+nnoremap <leader>/ :CommandTMRU<cr><esc>
+let g:CommandTCancelMap='<C-x>'
 
 " =========== END Plugin Settings =========="
 
