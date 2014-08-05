@@ -84,7 +84,7 @@ alias lo='ls -1'
 alias la='ls -A'
 
 # file count
-alias fc='echo $(ls -1 | wc -l)'
+alias fcnt='echo $(ls -1 | wc -l)'
 
 # Searching
 alias search='grep -rni'

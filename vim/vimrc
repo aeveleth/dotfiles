@@ -231,7 +231,7 @@ map <leader>sp [s
 " add word to dictionary
 map <leader>sa zg
 " find suggestions
-map <leader>s? z=
+map <leader>sf z=
 
 " Managing splits
 " -------------------------------------------------------------

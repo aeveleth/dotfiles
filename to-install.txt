@@ -5,13 +5,18 @@ redshift
 filezilla
 pdflatex
 git
+tig
 wget
+taskwarrior
 
 calibre
 vlc
 youtube-dl
-cmus
+cmus/mocp
+beets
 rtorrent
+pianobar
+avconv
 
 translate
 dictd
@@ -22,7 +27,19 @@ dict-freedict-eng-deu
 multisystem
 unetbootin
 
-ctags
 ranger
+w3m
+atool
+mediainfo
+caca-utils
+highlight
+
+ctags
 xclip
-tmux
+dtrx
+latex
+gpg/openssl
+avconv
+
+alpine/mutt
+snownews/newsbeuter/canto/rsstail
