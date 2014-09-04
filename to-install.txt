@@ -1,13 +1,21 @@
+gnome-tweak-tool
+unity-tweak-tool
+add-apt-repository ppa:tualatrix/ppa
+ubuntu-tweak
+
 vim-gnome
 chromium
 terminator
 redshift
+redshift-gtk
 filezilla
-pdflatex
 git
 tig
 wget
-taskwarrior
+task (taskwarrior)
+
+texlive-latex-base
+libav-tools
 
 calibre
 vlc
@@ -16,9 +24,11 @@ cmus/mocp
 beets
 rtorrent
 pianobar
-avconv
 
-translate
+trs (google-translate)
+    apt-get install gawk
+    wget https://github.com/soimort/google-translate-cli/archive/master.tar.gz
+    make install
 dictd
 dict-freedict-deu-eng
 dict-de-en
@@ -37,9 +47,6 @@ highlight
 ctags
 xclip
 dtrx
-latex
-gpg/openssl
-avconv
 
 alpine/mutt
 snownews/newsbeuter/canto/rsstail
